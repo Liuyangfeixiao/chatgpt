@@ -1,8 +1,10 @@
 package com.example.chatgpt.interfaces;
 
+import com.example.chatgpt.application.LoginService;
 import com.example.chatgpt.domain.security.service.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +16,10 @@ import java.util.Map;
 @RestController
 public class ApiAccessController {
     private Logger logger = LoggerFactory.getLogger(ApiAccessController.class);
+    @Autowired
+    private LoginService loginService;
     /**
-     * http://localhost:8080/authorize?username=xfg&password=123
+     * http://localhost:8080/authorize?username=lyfx&password=123
      */
     @RequestMapping("/authorize")
     public ResponseEntity<Map<String, String>> authorize(String username, String password) {
@@ -26,11 +30,7 @@ public class ApiAccessController {
             return ResponseEntity.ok(map);
         }
         // 校验通过生成token
-        Map<String, Object> claim = new HashMap<>();
-        claim.put("username", username);
-        String token = JwtUtil.createJWT(username, claim);
-        map.put("msg", "授权成功");
-        map.put("token", token);
+        map = loginService.getToken(username, password);
         // 返回token码
         return ResponseEntity.ok(map);
     }
