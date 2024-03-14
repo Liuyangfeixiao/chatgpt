@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问  必须以斜杠开头  不包含context-path路径
-                .antMatchers("/authorize").permitAll()
+                .antMatchers("/authorize", "/wechat/portal").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
