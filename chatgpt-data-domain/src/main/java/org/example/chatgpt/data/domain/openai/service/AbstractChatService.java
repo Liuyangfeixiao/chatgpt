@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @Slf4j
 public abstract class AbstractChatService implements IChatService{
     @Resource
-    OpenAiSession openAiSession;
+    protected OpenAiSession openAiSession;
     @Override
     public ResponseBodyEmitter completions(ChatProcessAggregate chatProcess) {
         // 1. 校验权限

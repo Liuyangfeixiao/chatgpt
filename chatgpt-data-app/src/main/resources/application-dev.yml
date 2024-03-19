@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+# 应用配置
+app:
+  config:
+    api-version: v1
+    # 跨域，开发阶段可以配置为 * 不限制
+    cross-origin: '*'
+
+# 线程池配置
+thread:
+  pool:
+    executor:
+      config:
+        core-pool-size: 20
+        max-pool-size: 50
+        keep-alive-time: 5000
+        block-queue-size: 5000
+        policy: CallerRunsPolicy
+# ChatGLM SDK Config
+chatglm:
+  sdk:
+    config:
+      # 状态；true = 开启、false 关闭
+      enabled: true
+      # 官网地址
+      api-host: https://open.bigmodel.cn/
+      # 官网申请 https://open.bigmodel.cn/usercenter/apikeys - 自己可申请
+      api-secret-key: 2f35c38c217c30ad13e87d83de59aa22.UUjqNdr0pJFpDtJn
