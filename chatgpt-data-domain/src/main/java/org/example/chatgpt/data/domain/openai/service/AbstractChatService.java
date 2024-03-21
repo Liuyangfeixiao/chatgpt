@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
 import org.example.chatgpt.data.types.common.Constants;
 import org.example.chatgpt.data.types.exception.ChatGPTException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 import javax.annotation.Resource;
@@ -13,7 +14,7 @@ import javax.annotation.Resource;
 @Slf4j
 public abstract class AbstractChatService implements IChatService{
     @Resource
-    protected OpenAiSession openAiSession;
+    protected OpenAiSession chatGlMOpenAiSession;
     @Override
     public ResponseBodyEmitter completions(ChatProcessAggregate chatProcess) {
         // 1. 校验权限

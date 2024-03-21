@@ -36,7 +36,7 @@ public class ChatService extends AbstractChatService{
         
         // 3. 请求应答
         try {
-            openAiSession.completions(request, new EventSourceListener() {
+            chatGlMOpenAiSession.completions(request, new EventSourceListener() {
                 @Override
                 public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type, @NotNull String data) {
                     ChatCompletionResponse response = JSON.parseObject(data, ChatCompletionResponse.class);

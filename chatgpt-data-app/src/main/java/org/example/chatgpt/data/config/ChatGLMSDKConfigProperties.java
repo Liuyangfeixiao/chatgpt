@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "chatglm.sdk.config", ignoreInvalidFields = true)
 public class ChatGLMSDKConfigProperties {
+    /** 状态；open = 开启、close 关闭 */
     private boolean enable;
     /**转发地址**/
     private String apiHost;
