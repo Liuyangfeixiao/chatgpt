@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ChatGPTRequestDTO {
     /**默认模型*/
-    private String model = ChatGLMModel.CHATGLM_3_TURBO.getCode();
+    private String model = ChatGLMModel.GLM_3_5_TURBO.getCode();
     /** 问题描述 */
     private List<MessageEntity> messages;
 }

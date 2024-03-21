@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@CrossOrigin("${app.config.cross-origin}")
+@CrossOrigin("*")
 @RequestMapping("/api/${app.config.api-version}")
 public class ChatGPTAIServiceController {
     @Resource

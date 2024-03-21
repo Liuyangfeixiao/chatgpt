@@ -15,11 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 public class ChatProcessAggregate {
     /**用户ID*/
-    String openid;
+//    String openid;
     /**验证信息*/
     private String token;
     /**默认模型*/
-    private String model = ChatGLMModel.CHATGLM_3_TURBO.getCode();
+    private String model = ChatGLMModel.GLM_3_5_TURBO.getCode();
     /**问题描述*/
     private List<MessageEntity> messages;
 }

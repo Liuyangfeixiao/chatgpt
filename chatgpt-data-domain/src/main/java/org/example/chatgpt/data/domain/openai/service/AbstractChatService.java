@@ -35,9 +35,8 @@ public abstract class AbstractChatService implements IChatService{
         } catch (Exception e) {
             throw new ChatGPTException(Constants.ResponseCode.UN_ERROR.getCode(), Constants.ResponseCode.UN_ERROR.getInfo());
         }
-
-        // 4. 返回结果
+        // 返回结果
         return emitter;
     }
-    protected abstract void doMessageResponse(ChatProcessAggregate chatProcess, ResponseBodyEmitter emitter) throws JsonProcessingException;
+    protected abstract void doMessageResponse(ChatProcessAggregate chatProcess, ResponseBodyEmitter emitter);
 }
