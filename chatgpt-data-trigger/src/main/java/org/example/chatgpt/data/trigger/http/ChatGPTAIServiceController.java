@@ -21,8 +21,9 @@ import java.util.stream.Collectors;
 public class ChatGPTAIServiceController {
     @Resource
     private IChatService chatService;
-    @RequestMapping(value = "chat/completions", method = RequestMethod.POST)
-    public ResponseBodyEmitter completionStream(@RequestBody ChatGPTRequestDTO request, @RequestHeader("Authorization") String token,
+    @PostMapping(value = "chat/completions")
+    public ResponseBodyEmitter completionStream(@RequestBody ChatGPTRequestDTO request,
+                                                @RequestHeader("Authorization") String token,
                                                 HttpServletResponse response) {
         log.info("流式问答请求开始，使用模型: {} 请求信息: {}", request.getModel(), JSON.toJSONString(request.getMessages()));
         try {
@@ -39,13 +40,12 @@ public class ChatGPTAIServiceController {
                        .map(entity -> MessageEntity.builder()
                                .role(entity.getRole())
                                .content(entity.getContent())
-                               .name(entity.getName())
                                .build())
                             .collect(Collectors.toList()))
                     .build();
             return chatService.completions(chatProcessAggregate);
         } catch (Exception e) {
-            log.error("流式问答请求异常, 请求模型: {}", request.getModel(), e);
+            log.error("流式问答请求异常, 请求模型: {}, 异常信息", request.getModel(), e);
             throw new ChatGPTException(e.getMessage());
         }
     }

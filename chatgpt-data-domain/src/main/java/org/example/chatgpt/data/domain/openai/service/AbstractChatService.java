@@ -13,17 +13,15 @@ import javax.annotation.Resource;
 
 @Slf4j
 public abstract class AbstractChatService implements IChatService{
-    @Resource
-    protected OpenAiSession chatGlMOpenAiSession;
     @Override
     public ResponseBodyEmitter completions(ChatProcessAggregate chatProcess) {
         // 1. 校验权限
-        if (!"b8b4".equals(chatProcess.getToken())) {
+        if (!"openai".equals(chatProcess.getToken())) {
             throw new ChatGPTException(Constants.ResponseCode.TOKEN_ERROR.getCode(), Constants.ResponseCode.TOKEN_ERROR.getInfo());
         }
 
         // 2. 请求应答
-        ResponseBodyEmitter emitter = new ResponseBodyEmitter(3*60*1000L); // 设置3min
+        ResponseBodyEmitter emitter = new ResponseBodyEmitter(3*6*1000L); // 设置3min
         emitter.onCompletion(() -> {
             log.info("流式问答请求完成，使用模型{}", chatProcess.getModel());
         });
