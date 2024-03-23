@@ -26,3 +26,10 @@ chatglm:
       api-host: https://open.bigmodel.cn/
       # 官网申请 https://open.bigmodel.cn/usercenter/apikeys - 自己可申请
       api-secret-key: 2f35c38c217c30ad13e87d83de59aa22.UUjqNdr0pJFpDtJn
+
+# wx 公众号配置
+wx:
+  config:
+    originalid: xxxxxxxx
+    appid: xxxxxxxx
+    token: mywx
