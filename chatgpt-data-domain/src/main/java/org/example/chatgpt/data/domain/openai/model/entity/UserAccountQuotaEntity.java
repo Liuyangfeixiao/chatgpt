@@ -1,5 +1,9 @@
 package org.example.chatgpt.data.domain.openai.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.chatgpt.data.domain.openai.model.vo.UserAccountStatusVO;
 import org.example.chatgpt.data.types.common.Constants;
 
@@ -9,6 +13,10 @@ import java.util.List;
 /**
  * 用户账户额度实体对象
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserAccountQuotaEntity {
     /**
      * 用户ID

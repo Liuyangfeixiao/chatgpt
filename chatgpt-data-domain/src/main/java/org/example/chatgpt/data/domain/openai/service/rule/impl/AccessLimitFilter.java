@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.chatgpt.data.domain.openai.annotation.LogicStrategy;
 import org.example.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
 import org.example.chatgpt.data.domain.openai.model.entity.RuleLogicEntity;
+import org.example.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
 import org.example.chatgpt.data.domain.openai.model.vo.LogicCheckTypeVO;
+import org.example.chatgpt.data.domain.openai.model.vo.UserAccountStatusVO;
 import org.example.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import org.example.chatgpt.data.domain.openai.service.rule.factory.DefaultLogicFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +21,7 @@ import javax.annotation.Resource;
 @Slf4j
 @Component
 @LogicStrategy(logicModel = DefaultLogicFactory.LogicModel.ACCESS_LIMIT)
-public class AccessLimitFilter implements ILogicFilter {
+public class AccessLimitFilter implements ILogicFilter<UserAccountQuotaEntity> {
     @Value("${app.config.limit-count}")
     private Integer limitCount;
     @Value("${app.config.white-list}")
@@ -27,7 +29,7 @@ public class AccessLimitFilter implements ILogicFilter {
     @Resource
     private Cache<String, Integer> visitCache;
     @Override
-    public RuleLogicEntity<ChatProcessAggregate> filter(ChatProcessAggregate chatProcess) {
+    public RuleLogicEntity<ChatProcessAggregate> filter(ChatProcessAggregate chatProcess, UserAccountQuotaEntity data) {
         try {
             // 白名单直接放行
             if (chatProcess.isWhiteList(whiteListStr)) {

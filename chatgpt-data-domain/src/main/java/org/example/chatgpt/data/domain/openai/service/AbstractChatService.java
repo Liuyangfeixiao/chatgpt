@@ -5,7 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.example.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
 import org.example.chatgpt.data.domain.openai.model.entity.RuleLogicEntity;
+import org.example.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
 import org.example.chatgpt.data.domain.openai.model.vo.LogicCheckTypeVO;
+import org.example.chatgpt.data.domain.openai.repository.IOpenAiRepository;
 import org.example.chatgpt.data.domain.openai.service.rule.factory.DefaultLogicFactory;
 import org.example.chatgpt.data.types.common.Constants;
 import org.example.chatgpt.data.types.exception.ChatGPTException;
@@ -19,6 +21,8 @@ import javax.annotation.Resource;
 public abstract class AbstractChatService implements IChatService{
     @Resource
     protected OpenAiSession openAiSession;
+    @Resource
+    protected IOpenAiRepository openAiRepository;
     @Override
     public ResponseBodyEmitter completions(ChatProcessAggregate chatProcess, ResponseBodyEmitter emitter) {
         try {
@@ -27,8 +31,12 @@ public abstract class AbstractChatService implements IChatService{
                 log.info("流式问答请求完成，使用模型{}", chatProcess.getModel());
             });
             emitter.onError(throwable -> log.info("流式问答请求异常，使用模型{}", chatProcess.getModel(), throwable));
-            // 2. 规则过滤，频次过滤和敏感词过滤
+            // 2. 查询用户信息, 做了一层防腐操作
+            UserAccountQuotaEntity userAccountQuotaEntity = openAiRepository.queryUserAccount(chatProcess.getOpenid());
+            // 添加验证账户状态，验证账户的剩余额度，使用的模型是否被允许
+            // 3. 规则过滤，频次过滤和敏感词过滤
             RuleLogicEntity<ChatProcessAggregate> ruleLogicEntity = this.doCheckLogic(chatProcess,
+                    userAccountQuotaEntity,
                     DefaultLogicFactory.LogicModel.ACCESS_LIMIT.getCode(),
                     DefaultLogicFactory.LogicModel.SENSITIVE_WORD.getCode());
             // 没有通过规则过滤
@@ -38,7 +46,7 @@ public abstract class AbstractChatService implements IChatService{
                 return emitter;
             }
             
-            // 3. 应答处理
+            // 4. 应答处理
             this.doMessageResponse(chatProcess, emitter);
         } catch (Exception e) {
             throw new ChatGPTException(Constants.ResponseCode.UN_ERROR.getCode(), Constants.ResponseCode.UN_ERROR.getInfo());
@@ -49,5 +57,5 @@ public abstract class AbstractChatService implements IChatService{
     }
     protected abstract void doMessageResponse(ChatProcessAggregate chatProcess, ResponseBodyEmitter emitter);
     
-    protected abstract RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcess, String... logics);
+    protected abstract RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcess, UserAccountQuotaEntity data, String... logics);
 }

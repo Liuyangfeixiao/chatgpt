@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.chatgpt.data.domain.openai.annotation.LogicStrategy;
+import org.example.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
 import org.example.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
@@ -17,9 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class DefaultLogicFactory {
-    public Map<String, ILogicFilter> logicFilterMap = new ConcurrentHashMap<>();
+    public Map<String, ILogicFilter<UserAccountQuotaEntity>> logicFilterMap = new ConcurrentHashMap<>();
     
-    public DefaultLogicFactory(List<ILogicFilter> logicFilters) {
+    public DefaultLogicFactory(List<ILogicFilter<UserAccountQuotaEntity>> logicFilters) {
         logicFilters.forEach(logic -> {
             // 查找filter类上是否存在LogicStrategy注解，并将注解信息保存到strategy变量中
             LogicStrategy strategy = AnnotationUtils.findAnnotation(logic.getClass(), LogicStrategy.class);
@@ -32,7 +33,7 @@ public class DefaultLogicFactory {
     /**
      * @description 开启逻辑过滤器
      */
-    public Map<String, ILogicFilter> openLogicFilter() {
+    public Map<String, ILogicFilter<UserAccountQuotaEntity>> openLogicFilter() {
         return logicFilterMap;
     }
     

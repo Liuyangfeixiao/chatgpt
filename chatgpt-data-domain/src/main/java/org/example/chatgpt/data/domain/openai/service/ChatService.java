@@ -9,6 +9,7 @@ import okhttp3.sse.EventSourceListener;
 import org.apache.commons.lang3.StringUtils;
 import org.example.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
 import org.example.chatgpt.data.domain.openai.model.entity.RuleLogicEntity;
+import org.example.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
 import org.example.chatgpt.data.domain.openai.model.vo.LogicCheckTypeVO;
 import org.example.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import org.example.chatgpt.data.domain.openai.service.rule.factory.DefaultLogicFactory;
@@ -35,12 +36,12 @@ public class ChatService extends AbstractChatService{
     private DefaultLogicFactory logicFactory;
     
     @Override
-    protected RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcess, String... logics) {
-        Map<String, ILogicFilter> logicFilterMap = logicFactory.openLogicFilter();
+    protected RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcess, UserAccountQuotaEntity data, String... logics) {
+        Map<String, ILogicFilter<UserAccountQuotaEntity>> logicFilterMap = logicFactory.openLogicFilter();
         RuleLogicEntity<ChatProcessAggregate> entity = null;
         // 通过不同的规则校验
         for (String logic : logics) {
-            entity = logicFilterMap.get(logic).filter(chatProcess);
+            entity = logicFilterMap.get(logic).filter(chatProcess, data);
             if (!LogicCheckTypeVO.SUCCESS.equals(entity.getType())) {
                 return entity;
             }
