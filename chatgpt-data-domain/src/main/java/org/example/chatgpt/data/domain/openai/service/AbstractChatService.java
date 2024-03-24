@@ -11,6 +11,7 @@ import org.example.chatgpt.data.types.common.Constants;
 import org.example.chatgpt.data.types.exception.ChatGPTException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.annotation.Resource;
 

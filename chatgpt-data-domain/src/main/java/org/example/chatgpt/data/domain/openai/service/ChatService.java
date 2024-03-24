@@ -18,9 +18,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -53,43 +55,45 @@ public class ChatService extends AbstractChatService{
             // 1. 请求消息
             List<ChatCompletionRequest.Prompt> messages = chatProcess.getMessages().stream()
                     .map(entity -> ChatCompletionRequest.Prompt.builder()
-                            .role(Role.valueOf(entity.getRole()).name())
+                            .role(Role.user.getCode())
                             .content(entity.getContent())
                             .build())
                     .collect(Collectors.toList());
             // 封装参数
-            // stream=true时返回的是 delta， 否则是 message
-            ChatCompletionRequest request = ChatCompletionRequest.builder()
-                    .isCompatible(true)
-                    .model(Model.valueOf(ChatGLMModel.get(chatProcess.getModel()).name()))
-                    .prompt(messages).build();
-            
+            ChatCompletionRequest request = new ChatCompletionRequest();
+            request.setModel(Model.valueOf(ChatGLMModel.get(chatProcess.getModel()).name()));
+            request.setIncremental(true);
+            request.setIsCompatible(true);
+            request.setPrompt(messages);
+            // ChatCompletionRequest.builder()
+            //                    .isCompatible(true)
+            //                    .incremental(false)
+            //                    .model(Model.valueOf(ChatGLMModel.get(chatProcess.getModel()).name()))
+            //                    .prompt(messages).build();
+            // Model.valueOf(ChatGLMModel.get(chatProcess.getModel()).name())
             try {
                 this.openAiSession.completions(request, new EventSourceListener() {
                     @Override
                     public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type, @NotNull String data) {
                         ChatCompletionResponse response = JSON.parseObject(data, ChatCompletionResponse.class);
-                        List<ChatCompletionResponse.Choice> choices = response.getChoices();
-                        for (ChatCompletionResponse.Choice choice : choices) {
-                            ChatCompletionResponse.Delta delta = choice.getDelta();
-                            // 判断是不是 assistant
-                            if (!Role.assistant.getCode().equals(delta.getRole())) {
-                                continue;
-                            }
-                            // 判断是否结束
-                            String finishReason = choice.getFinishReason();
-                            if (StringUtils.isNoneBlank(finishReason) && "stop".equals(finishReason)) {
-                                emitter.complete();
-                                break;
-                            }
-                            
-                            // 发送消息
+                        // 发送信息
+                        if (EventType.add.getCode().equals(type)) {
                             try {
-                                emitter.send(delta.getContent());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                                emitter.send(response.getData());
+                            } catch (Exception e) {
+                                throw new ChatGPTException(e.getMessage());
                             }
                         }
+                        // type 消息类型，add 增量，finish 结束，error 错误，interrupted 中断
+                        if (EventType.finish.getCode().equals(type)) {
+                            ChatCompletionResponse.Meta meta = JSON.parseObject(response.getMeta(), ChatCompletionResponse.Meta.class);
+                            log.info("[输出结束] Tokens {}", JSON.toJSONString(meta));
+                        }
+                    }
+                    
+                    @Override
+                    public void onClosed(@NotNull EventSource eventSource) {
+                        emitter.complete();
                     }
                 });
             } catch (Exception e) {

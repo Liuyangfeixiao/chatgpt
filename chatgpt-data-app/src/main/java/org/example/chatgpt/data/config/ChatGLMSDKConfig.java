@@ -16,7 +16,7 @@ public class ChatGLMSDKConfig {
         // 1. 配置文件
         cn.bugstack.chatglm.session.Configuration configuration = new cn.bugstack.chatglm.session.Configuration();
         configuration.setApiHost(properties.getApiHost());
-        configuration.setApiSecretKey(properties.getApiSecretKey());
+        configuration.setApiSecretKey("2f35c38c217c30ad13e87d83de59aa22.UUjqNdr0pJFpDtJn");
         // 2. 会话工厂
         OpenAiSessionFactory factory = new DefaultOpenAiSessionFactory(configuration);
         // 3. 开启会话
