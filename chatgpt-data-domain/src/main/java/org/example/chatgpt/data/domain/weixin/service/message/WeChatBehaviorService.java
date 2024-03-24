@@ -19,7 +19,7 @@ public class WeChatBehaviorService implements IWeChatBehaviorService {
     @Value("${wx.config.originalid}")
     private String originalId;
     @Resource
-    private Cache<String, String> cache;
+    private Cache<String, String> codeCache;
     @Override
     public String acceptUserBehavior(UserBehaviorMessageEntity userBehaviorMessageEntity) {
         // 判断事件类型，产生验证码
@@ -30,13 +30,13 @@ public class WeChatBehaviorService implements IWeChatBehaviorService {
         // Text文本类型
         if (MsgTypeVO.TEXT.getCode().equals(userBehaviorMessageEntity.getMsgType())) {
             // 缓存验证码
-            String isExistCode = cache.getIfPresent(userBehaviorMessageEntity.getOpenId());
+            String isExistCode = codeCache.getIfPresent(userBehaviorMessageEntity.getOpenId());
             // 判断验证码是否存在
             if (StringUtils.isBlank(isExistCode)) {
                 // 创建验证码
                 String code = RandomStringUtils.randomNumeric(4);
-                cache.put(code, userBehaviorMessageEntity.getOpenId());
-                cache.put(userBehaviorMessageEntity.getOpenId(), code);
+                codeCache.put(code, userBehaviorMessageEntity.getOpenId());
+                codeCache.put(userBehaviorMessageEntity.getOpenId(), code);
                 isExistCode = code;
             }
             // 反馈信息[文本]

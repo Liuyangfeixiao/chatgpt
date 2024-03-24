@@ -15,4 +15,11 @@ public interface IAuthService {
      * @return
      */
     public boolean checkToken(String token);
+    
+    /**
+     * @description 获取token中的openID
+     * @param token jwt token
+     * @return
+     */
+    String getOpenid(String token);
 }

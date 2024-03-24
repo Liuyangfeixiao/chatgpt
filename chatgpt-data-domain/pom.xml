@@ -47,6 +47,10 @@
             <artifactId>java-jwt</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word</artifactId>
+        </dependency>
+        <dependency>
             <groupId>cn.bugstack</groupId>
             <artifactId>chatglm-sdk-java</artifactId>
         </dependency>

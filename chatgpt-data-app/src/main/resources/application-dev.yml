@@ -7,6 +7,12 @@ app:
     api-version: v1
     # 跨域，开发阶段可以配置为 * 不限制
     cross-origin: '*'
+    # 访问频次限制
+    limit-count: 10
+    # 白名单，不做频次拦截【微信的openai】oxfA9w8-23yvwTmo2ombz0E4zJv4
+    white-list: ojbZUv18lbmriaTjcCWBYkOrSbHA
+    # 访问频率限制
+    access-frequency: 3
 
 # 线程池配置
 thread:

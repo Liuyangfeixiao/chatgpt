@@ -4,5 +4,5 @@ import org.example.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggreg
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 public interface IChatService {
-    ResponseBodyEmitter completions(ChatProcessAggregate chatProcess);
+    ResponseBodyEmitter completions(ChatProcessAggregate chatProcess, ResponseBodyEmitter emitter);
 }

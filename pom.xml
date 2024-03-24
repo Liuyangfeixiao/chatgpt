@@ -110,6 +110,11 @@
                 <artifactId>hutool-all</artifactId>
                 <version>5.8.15</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sensitive-word</artifactId>
+                <version>0.8.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
