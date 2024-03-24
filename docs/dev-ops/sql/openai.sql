@@ -12,7 +12,7 @@
 
 SET NAMES utf8mb4;
 CREATE database if NOT EXISTS `openai` default character set utf8mb4 collate utf8mb4_general_ci;
-use 'openai';
+use `openai`;
 
 # 转储表 user_account
 # ------------------------------------------------------------
