@@ -7,11 +7,11 @@ import org.example.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntit
  */
 public interface IOpenAiRepository {
     /**
-     * @description 减少用户账户额度
      * @param openid
      * @return
+     * @description 减少用户账户额度
      */
-    int subAccountQuota(String openid);
+    Integer subAccountQuota(String openid);
 
     /**
      * 查找用户账户额度

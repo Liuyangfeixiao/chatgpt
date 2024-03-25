@@ -33,12 +33,17 @@ public abstract class AbstractChatService implements IChatService{
             emitter.onError(throwable -> log.info("流式问答请求异常，使用模型{}", chatProcess.getModel(), throwable));
             // 2. 查询用户信息, 做了一层防腐操作
             UserAccountQuotaEntity userAccountQuotaEntity = openAiRepository.queryUserAccount(chatProcess.getOpenid());
-            // 添加验证账户状态，验证账户的剩余额度，使用的模型是否被允许
-            // 3. 规则过滤，频次过滤和敏感词过滤
+            
+            // 3. 规则过滤：频次过滤，敏感词过滤，账户状态过滤，用户额度过滤，
+            // 把要操作数据库的过滤器往后放
             RuleLogicEntity<ChatProcessAggregate> ruleLogicEntity = this.doCheckLogic(chatProcess,
                     userAccountQuotaEntity,
                     DefaultLogicFactory.LogicModel.ACCESS_LIMIT.getCode(),
-                    DefaultLogicFactory.LogicModel.SENSITIVE_WORD.getCode());
+                    DefaultLogicFactory.LogicModel.SENSITIVE_WORD.getCode(),
+                    null == userAccountQuotaEntity ? null : DefaultLogicFactory.LogicModel.ACCOUNT_STATUS.getCode(),
+                    null == userAccountQuotaEntity ? null : DefaultLogicFactory.LogicModel.MODEL_TYPE.getCode(),
+                    null == userAccountQuotaEntity ? null : DefaultLogicFactory.LogicModel.USER_QUOTA.getCode()
+            );
             // 没有通过规则过滤
             if (!LogicCheckTypeVO.SUCCESS.equals(ruleLogicEntity.getType())) {
                 emitter.send(ruleLogicEntity.getInfo());

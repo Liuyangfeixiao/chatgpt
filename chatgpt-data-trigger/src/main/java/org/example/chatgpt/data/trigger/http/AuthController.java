@@ -50,6 +50,7 @@ public class AuthController {
             return Response.<String>builder()
                     .code(Constants.ResponseCode.SUCCESS.getCode())
                     .info(Constants.ResponseCode.SUCCESS.getInfo())
+                    .data(messageTextEntity.getContent())
                     .build();
         } catch (Exception e) {
             log.info("生成验证码失败，用户ID: {}", openid);

@@ -41,6 +41,7 @@ public class ChatService extends AbstractChatService{
         RuleLogicEntity<ChatProcessAggregate> entity = null;
         // 通过不同的规则校验
         for (String logic : logics) {
+            if (null == logic) continue;
             entity = logicFilterMap.get(logic).filter(chatProcess, data);
             if (!LogicCheckTypeVO.SUCCESS.equals(entity.getType())) {
                 return entity;

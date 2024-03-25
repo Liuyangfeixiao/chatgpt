@@ -21,7 +21,7 @@ public class OpenAiRepository implements IOpenAiRepository {
     private IUserAccountDao userAccountDao;
     @Override
     public UserAccountQuotaEntity queryUserAccount(String openid) {
-        UserAccountPO userAccountPO = userAccountDao.queryUserAccount();
+        UserAccountPO userAccountPO = userAccountDao.queryUserAccount(openid);
         if (null == userAccountPO) return null;
         // 对象转换
         UserAccountQuotaEntity userAccountQuotaEntity = new UserAccountQuotaEntity();
@@ -34,12 +34,12 @@ public class OpenAiRepository implements IOpenAiRepository {
     }
 
     /**
-     * @description 减少用户额度
      * @param openid
      * @return
+     * @description 减少用户额度
      */
     @Override
-    public int subAccountQuota(String openid) {
+    public Integer subAccountQuota(String openid) {
         return userAccountDao.subAccountQuota(openid);
     }
 }
