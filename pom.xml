@@ -41,9 +41,9 @@
                  # mysql 8.x driver-class-name: com.mysql.cj.jdbc.Driver mysql-connector-java 8.0.22
             -->
             <dependency>
-                <groupId>com.mysql</groupId>
+                <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.34</version>
+                <version>8.0.33</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -114,6 +114,11 @@
                 <groupId>com.github.houbb</groupId>
                 <artifactId>sensitive-word</artifactId>
                 <version>0.8.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>4.39.2.ALL</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

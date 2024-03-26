@@ -58,6 +58,28 @@ spring:
     connection-test-query: SELECT 1
   type: com.zaxxer.hikari.HikariDataSource
 
+# alipay 配置
+alipay:
+  enabled: true
+  app_id: 9021000135662562
+  # 商户私钥
+  merchant_private_key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCn3zlNdEHAw61CcKaOmcyt/2RM49546d9kySeevkDYmqodTm2TMGXjf3ViF4F/PwVhPaYgVwz+E/crK6EbvMGhmaraicw/QD0qIJXLJGdRCXNODhDt2lI2Qlo477XhUum/loaQdkVBmziUeSJRpewdXx4PW7Y6aCzEGJOvxNOjA6PuFw6TYv4x+fQJvWvIUIUkPJXq2c/vEy2LdsAnFDIGxqEOqR/05QmDcJH7M+W2h9QUQ3Z1Dr2kc2jIyr4MUlI0JSLwFSHoGM0x9uJabYC05rAlma4mg+Q51XogN9up30dLtwogbsF13rsc9MHReKSGrP+J38sNThujSBhpzXbLAgMBAAECggEBAIutfr5llzhPGGCJ3uwUKGw2bjxT9Y5h+lCf1umMn+QafKU51o573Ks4KHFf4Y4A3/cTFqEeDV9zOVugR8MOgYZ2l+SSd3HBf6MHzdtjBNw2osw1g/yEhZdEClIJkipTlM6m7nxRDDsUbjWLvPR2vEmMFTTuOGfMukLHuEqt2PJu/H0KQOVmiSHEWF9LO4GBWAh30akHn9I2llzlVzUfAM4V5WZxXWCSZqPyUSH1kq/QXsHcbgg3P4J1+d9X/fmf+A4Sz0FSgYkEqomiomRfhgTaheifYPF9GiWsIo+Uyz8K/p1Ui+b7l1/aqemXF8p9ujyABIeIkpWqaK7/Ma0J/gECgYEA99ubKZ1D9s9nFzYMsE9Q/8N4F0XkvavDRDOT6TrW63krCuzFu6jWUHF8z2hyg9yDA11iCoE8WBb28qv6lIxQJkXLzV2Pyf2A0gilEMMIuiJAo3agooUzXk53WOkHsv2eCWjxzmmjtfzQxljNUxUx93EdlfkU9rCT5xKdIi2pqYECgYEArWL3PgVTP/HneoNRz9WqszLkWiJ6KTrg7Uxzh1FjvBCatzWaLLZrvL/FtbCXY9+LTioBxLdSBvATlyW7zyrIJaY+h+hsyUtz+aEo0yUxERqCeEU5ZHyVUgfE4qyy1eztalomeQTnw9zyh+7vvOwd8Rl0oRFpWVeWNHu/vL4zzksCgYEAsOStr5yK5foN9FXh5m8lOvSRn+KFJw0QNnutI7aXrsTygECNuqn8Ert8PTapDAz0ABHEqASmQaRaKMWu+BfQGBCWLIKK3bksGDqNPBJGBzns8fz3FiaEi9jqeq0NjqRNByA7+3oPmhHOGtFD8PjeiV/UorV7TbimRjNVrA/014ECgYBsuuUlJZ3BOefZckR5uxoi6kU9KOXGuT+YUBsavrV2mEsNnTWj2HnTkcdgWu91GBh52enl/LgZ1a/TVzxhfAirY4dPHzgpO4HtB11cm7Qbb65l0bNeCqpxGKIlK/uyH7P6v7HkrmjQ8Nu+1t3McZ2NNlNnNk4EUuLE4t2odPZz5QKBgDMFsahyVs+3xZCdO6BGNPSUk7wST/fQOqQnZIB/X7rb0ltc/HSFaKbXcbE2ik445dtCxtchdquOpmR5/UPA9kqJogzoAy1vouzx6Bp4axMV4fkZSYMwKswEoX20/sEcg/jYfCLMJBmnXdDNzwdy28MPRFy0vhW1SzndS4zmkCvY
+  # 格式
+  format: json
+  # 支付宝公钥
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzVphtOJO1Z/tzYEfJjaNDjyYeGdjpF4aIxTrMOD+XbwFW8UnXN6XhhSFhf4KZZr1MtXW+cC2Zcye/bhJwGNswAH3jGV7T3yFPfDKIo4iTZ/jNpx0aBmjML3+qsnsS2WjsHOtuNwKvhT6BF2yBQ1jhirn8Erg8RWnpabHaHLi5jebnVYZG36ND5lSkX39EECIWVnbIuN5M4iMVzmUzsUMIlx5YxwYynVPrU0T7KzpdJ/jpr/N5ceXEngsDlRyE03InwU7v5rbFR/sI3OEdkwdARxW+6z5mEYcdvkc8VIxfZJYGeSe6d7dXQwxW0T116icMDJ+lpNxdbLar2wwSuzNxwIDAQAB
+  # 服务器异步通知页面路径
+  notify_url: https://xfg.natapp.cn/api/v1/alipay/notify_url
+  # 页面跳转同步通知页面路径
+  return_url: https://xfg.natapp.cn/api/v1/alipay/return_url
+  # 支付宝沙箱地址
+  gateway_url: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+  # 签名方式
+  sign_type: RSA2
+  # 字符编码格式
+  charset: utf-8
+
+
 # mybatis 配置
 mybatis:
   mapper-locations: classpath:/mybatis/mapper/*.xml
