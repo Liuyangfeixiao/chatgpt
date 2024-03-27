@@ -22,4 +22,21 @@
         FROM user_account
         WHERE openid = #{openid}
     </select>
+    <update id="addAccountQuota" parameterType="org.example.chatgpt.data.infrastructure.po.UserAccountPO">
+        UPDATE user_account SET
+        total_quota = total_quota + #{totalQuota},
+        surplus_quota = surplus_quota + #{surplusQuota},
+        update_time = now()
+        WHERE openid = #{openid}
+    </update>
+    <insert id="insert" parameterType="org.example.chatgpt.data.infrastructure.po.UserAccountPO">
+        INSERT INTO user_account(
+            openid, total_quota, surplus_quota, model_types, status,
+            create_time, update_time
+        )
+        VALUES(
+                  #{openid}, #{totalQuota}, #{surplusQuota}, #{modelTypes}, #{status},
+                  now(), now()
+              )
+    </insert>
 </mapper>
