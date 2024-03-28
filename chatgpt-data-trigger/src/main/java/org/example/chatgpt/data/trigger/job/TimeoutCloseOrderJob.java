@@ -24,7 +24,7 @@ public class TimeoutCloseOrderJob {
     /**
      * @description 将超时订单关闭 [已创建, 未支付, 超时30分钟]
      */
-    @Scheduled(cron = "0 0/10 * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void exec() {
         List<String> orderIds = orderService.queryTimeoutCloseOrder();
         if (orderIds.isEmpty()) {
